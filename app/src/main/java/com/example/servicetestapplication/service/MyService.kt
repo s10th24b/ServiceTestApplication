@@ -38,6 +38,10 @@ class MyService : Service() {
                 notification = createNotification()
                 startForeground(1, notification)
             }
+            CHANGE_BADGE -> {
+                notification = createNotification("하잉")
+//                startForeground(1, notification)
+            }
         }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -56,10 +60,10 @@ class MyService : Service() {
         return serviceChannel
     }
 
-    private fun createNotification(): Notification {
+    private fun createNotification(contentText: String = "연결됐어요옹"): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("EgoEco Foreground Service")
-            .setContentText("연결댓어요옹")
+            .setContentText(contentText)
             .setContentIntent(pendingIntent)
             .setTicker("hello")
             .setSmallIcon(R.mipmap.ic_launcher)
