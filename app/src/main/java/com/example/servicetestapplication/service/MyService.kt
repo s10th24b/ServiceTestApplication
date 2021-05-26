@@ -3,6 +3,7 @@ package com.example.servicetestapplication.service
 import android.app.*
 import android.content.Intent
 import android.os.IBinder
+import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.servicetestapplication.MainActivity
@@ -12,6 +13,7 @@ class MyService : Service() {
     private lateinit var pendingIntent: PendingIntent
     private lateinit var notificationChannel: NotificationChannel
     private lateinit var notification: Notification
+
 
     companion object {
         const val ACTION_START = "com.example.servicetestapplication.START"
@@ -37,6 +39,8 @@ class MyService : Service() {
                 notificationChannel = createNotificationChannel()
                 notification = createNotification()
                 startForeground(1, notification)
+                val thread = ServiceThread1()
+                thread.start()
             }
             CHANGE_BADGE -> {
                 notification = createNotification("하잉")
@@ -44,6 +48,14 @@ class MyService : Service() {
             }
         }
         return super.onStartCommand(intent, flags, startId)
+    }
+    class ServiceThread1 : Thread() {
+        override fun run() {
+            while(true){
+                SystemClock.sleep(500)
+                Log.d("KHJ","in thread")
+            }
+        }
     }
 
     private fun createNotificationChannel(): NotificationChannel {
